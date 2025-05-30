@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dynamic Checkout System</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+  }
+  input, button {
+    margin: 8px 0;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  button {
+    cursor: pointer;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-weight: bold;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  h2, h3 {
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h2>Dynamic Checkout System</h2>
+
+<label for="itemName">Item Name:</label>
+<input type="text" id="itemName" placeholder="Enter item name" />
+
+<label for="itemPrice">Item Price:</label>
+<input type="text" id="itemPrice" placeholder="Enter item price" />
+
+<button id="addBtn">Add Item</button>
+
+<h3>Items:</h3>
+<ul id="itemList"></ul>
+
+<h3 id="total">Total: $0.00</h3>
+
+<script>
+const checkout = {
+  items: [],
+  total: 0,
+  
+  addItem(item) {
+    const price = Number(item.price);
+    if (typeof price !== 'number' || isNaN(price) || price <= 0) {
+      alert("Invalid price. Please enter a positive number.");
+      return false;
+    }
+    item.price = price;
+    this.items.push(item);
+    this.total += price;
+    return true;
+  },
+  
+  getTotal() {
+    return `Total: $${this.total.toFixed(2)}`;
+  }
+};
+
+const addBtn = document.getElementById('addBtn');
+const itemNameInput = document.getElementById('itemName');
+const itemPriceInput = document.getElementById('itemPrice');
+const itemList = document.getElementById('itemList');
+const totalDisplay = document.getElementById('total');
+
+addBtn.addEventListener('click', () => {
+  const name = itemNameInput.value.trim();
+  const price = itemPriceInput.value.trim();
+
+  if (!name) {
+    alert("Please enter an item name.");
+    return;
+  }
+
+  if (checkout.addItem({ name, price })) {
+    const li = document.createElement('li');
+    li.textContent = `${name} - $${Number(price).toFixed(2)}`;
+    itemList.appendChild(li);
+    totalDisplay.textContent = checkout.getTotal();
+
+    // Clear inputs
+    itemNameInput.value = '';
+    itemPriceInput.value = '';
+    itemNameInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>
