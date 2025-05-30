@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Closure Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: auto;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    #output {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Closure Demo</h2>
+  <input type="text" id="messageInput" placeholder="Enter your message">
+  <button onclick="createClosure()">Create Closure</button>
+  <button onclick="showMessage()">Show Message</button>
+  <div id="output"></div>
+</div>
+
+<script>
+  let storedFunction = null;
+
+  function outerFunction(message) {
+    return function innerFunction() {
+      document.getElementById("output").textContent = `Message: ${message}`;
+    };
+  }
+
+  function createClosure() {
+    const msg = document.getElementById("messageInput").value.trim();
+    if (msg === "") {
+      alert("Please enter a message.");
+      return;
+    }
+    storedFunction = outerFunction(msg);
+    alert("Closure created! Now click 'Show Message'");
+  }
+
+  function showMessage() {
+    if (storedFunction) {
+      storedFunction();
+    } else {
+      alert("Please create a closure first.");
+    }
+  }
+</script>
+
+</body>
+</html>
