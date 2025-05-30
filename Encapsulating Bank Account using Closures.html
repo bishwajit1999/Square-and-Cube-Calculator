@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Account using Closures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .bank-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 5px;
+      font-size: 16px;
+    }
+    input {
+      width: 150px;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      color: white;
+    }
+    .deposit { background-color: #28a745; }
+    .withdraw { background-color: #dc3545; }
+    .balance { background-color: #007bff; }
+    #output {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bank-box">
+  <h2>Secure Bank Account</h2>
+
+  <div>
+    <label>Initial Balance:</label><br/>
+    <input type="number" id="initBalance" placeholder="e.g. 100" />
+    <button onclick="createAccount()">Create Account</button>
+  </div>
+
+  <div id="controls" style="display: none;">
+    <input type="number" id="amount" placeholder="Enter amount" />
+    <div>
+      <button class="deposit" onclick="deposit()">Deposit</button>
+      <button class="withdraw" onclick="withdraw()">Withdraw</button>
+      <button class="balance" onclick="getBalance()">Get Balance</button>
+    </div>
+  </div>
+
+  <div id="output">Please create an account first.</div>
+</div>
+
+<script>
+  let account = null;
+
+  function createBankAccount(initialAmount) {
+    let balance = Number(initialAmount);
+
+    return {
+      deposit(amount) {
+        if (amount > 0) {
+          balance += amount;
+          return `Deposited ₹${amount}. New Balance: ₹${balance}`;
+        }
+        return "Enter a valid deposit amount.";
+      },
+      withdraw(amount) {
+        if (amount > balance) {
+          return "Insufficient funds.";
+        } else if (amount <= 0) {
+          return "Enter a valid withdrawal amount.";
+        } else {
+          balance -= amount;
+          return `Withdrew ₹${amount}. Remaining Balance: ₹${balance}`;
+        }
+      },
+      getBalance() {
+        return `Current Balance: ₹${balance}`;
+      }
+    };
+  }
+
+  function createAccount() {
+    const init = document.getElementById("initBalance").value;
+    if (init === '' || isNaN(init) || init < 0) {
+      document.getElementById("output").textContent = "Please enter a valid initial amount.";
+      return;
+    }
+    account = createBankAccount(Number(init));
+    document.getElementById("controls").style.display = "block";
+    document.getElementById("output").textContent = `Account created with ₹${init}`;
+  }
+
+  function deposit() {
+    const amt = Number(document.getElementById("amount").value);
+    document.getElementById("output").textContent = account.deposit(amt);
+  }
+
+  function withdraw() {
+    const amt = Number(document.getElementById("amount").value);
+    document.getElementById("output").textContent = account.withdraw(amt);
+  }
+
+  function getBalance() {
+    document.getElementById("output").textContent = account.getBalance();
+  }
+</script>
+
+</body>
+</html>
