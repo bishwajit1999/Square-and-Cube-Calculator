@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Library Book Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      margin-bottom: 1rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #message {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border-radius: 5px;
+      background-color: #e2e3e5;
+      color: #333;
+    }
+    #bookList {
+      margin-top: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .book-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .book-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Library Book Manager</h1>
+
+<form id="bookForm">
+  <label for="title">Book Title:</label>
+  <input type="text" id="title" name="title" placeholder="Enter book title" required />
+
+  <label for="author">Author:</label>
+  <input type="text" id="author" name="author" placeholder="Enter author name" required />
+
+  <label for="year">Year of Publication:</label>
+  <input type="number" id="year" name="year" placeholder="Enter year" min="0" required />
+
+  <button type="submit">Add Book</button>
+</form>
+
+<div id="message"></div>
+
+<div id="bookList">
+  <h2>Books in Library (<span id="bookCount">0</span>)</h2>
+  <div id="booksContainer"></div>
+</div>
+
+<script>
+  const library = {
+    books: [
+      { title: "The Hobbit", author: "J.R.R. Tolkien", year: 1937 }
+    ],
+
+    addBook(book) {
+      if (
+        !book.title.trim() ||
+        !book.author.trim() ||
+        !book.year ||
+        isNaN(book.year) ||
+        book.year <= 0
+      ) {
+        throw new Error("Book information is incomplete or invalid.");
+      }
+
+      // Check for duplicate title (optional)
+      const duplicate = this.books.find(b => b.title.toLowerCase() === book.title.toLowerCase());
+      if (duplicate) {
+        throw new Error(`The book titled "${book.title}" already exists.`);
+      }
+
+      this.books.push(book);
+    },
+
+    findBookByTitle(title) {
+      return this.books.find(book => book.title.toLowerCase() === title.toLowerCase());
+    },
+
+    removeBook(title) {
+      const index = this.books.findIndex(book => book.title.toLowerCase() === title.toLowerCase());
+      if (index !== -1) {
+        this.books.splice(index, 1);
+      } else {
+        throw new Error("Book not found.");
+      }
+    }
+  };
+
+  const form = document.getElementById("bookForm");
+  const messageDiv = document.getElementById("message");
+  const booksContainer = document.getElementById("booksContainer");
+  const bookCountSpan = document.getElementById("bookCount");
+
+  function renderBooks() {
+    bookCountSpan.textContent = library.books.length;
+    booksContainer.innerHTML = "";
+
+    if (library.books.length === 0) {
+      booksContainer.textContent = "No books available.";
+      return;
+    }
+
+    library.books.forEach(book => {
+      const bookDiv = document.createElement("div");
+      bookDiv.classList.add("book-item");
+      bookDiv.textContent = `${book.title} by ${book.author} (${book.year})`;
+      booksContainer.appendChild(bookDiv);
+    });
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    messageDiv.textContent = "";
+
+    const newBook = {
+      title: form.title.value,
+      author: form.author.value,
+      year: Number(form.year.value)
+    };
+
+    try {
+      library.addBook(newBook);
+      messageDiv.style.color = "green";
+      messageDiv.textContent = `Book "${newBook.title}" added successfully!`;
+      renderBooks();
+      form.reset();
+    } catch (error) {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = error.message;
+    }
+  });
+
+  // Initial render
+  renderBooks();
+</script>
+
+</body>
+</html>
