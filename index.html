@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Square and Cube Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .calculator {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    input[type="number"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Square and Cube Calculator</h1>
+
+  <div class="calculator">
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <br />
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    // Arrow function with implicit return to calculate square and cube
+    const getSquareAndCube = n => ({ square: n ** 2, cube: n ** 3 });
+
+    function calculate() {
+      const input = document.getElementById('numberInput').value;
+      const number = Number(input);
+      if (!input || isNaN(number)) {
+        document.getElementById('result').innerText = 'Please enter a valid number.';
+        return;
+      }
+
+      const { square, cube } = getSquareAndCube(number);
+      document.getElementById('result').innerText = 
+        `Square: ${square} \nCube: ${cube}`;
+    }
+  </script>
+
+</body>
+</html>
