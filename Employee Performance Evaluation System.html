@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Performance Evaluation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+    input, button {
+      margin: 5px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .employee-row {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Employee Performance Evaluation System</h2>
+
+  <input type="text" id="name" placeholder="Employee Name" />
+  <input type="number" id="tasks" placeholder="Tasks Completed" />
+  <input type="number" id="rating" placeholder="Rating (0 to 5)" step="0.1" />
+  <button onclick="addEmployee()">Add Employee</button>
+  <button onclick="evaluatePerformance()">Evaluate</button>
+
+  <div id="employeeList"><strong>Employee List:</strong></div>
+  <div id="output"></div>
+
+  <script>
+    const employees = [];
+
+    function addEmployee() {
+      const name = document.getElementById("name").value.trim();
+      const tasks = parseInt(document.getElementById("tasks").value);
+      const rating = parseFloat(document.getElementById("rating").value);
+
+      if (name && !isNaN(tasks) && !isNaN(rating)) {
+        employees.push({ name, tasksCompleted: tasks, rating });
+        document.getElementById("employeeList").innerHTML += `<div class="employee-row">${name} - Tasks: ${tasks}, Rating: ${rating}</div>`;
+        document.getElementById("name").value = "";
+        document.getElementById("tasks").value = "";
+        document.getElementById("rating").value = "";
+      } else {
+        alert("Please enter valid data for all fields.");
+      }
+    }
+
+    function evaluatePerformance() {
+      const performancePriority = {
+        "Excellent": 3,
+        "Good": 2,
+        "Needs Improvement": 1
+      };
+
+      const result = employees
+        .filter(emp => emp.tasksCompleted > 5)
+        .map(emp => {
+          let level = "Needs Improvement";
+          if (emp.rating > 4.5) level = "Excellent";
+          else if (emp.rating >= 3 && emp.rating <= 4.5) level = "Good";
+          return { name: emp.name, performance: level };
+        })
+        .sort((a, b) => performancePriority[b.performance] - performancePriority[a.performance]);
+
+      // Display result
+      let outputHTML = "<strong>Performance Evaluation:</strong><br>";
+      result.forEach(emp => {
+        outputHTML += `${emp.name} - ${emp.performance}<br>`;
+      });
+
+      document.getElementById("output").innerHTML = outputHTML;
+    }
+  </script>
+
+</body>
+</html>
