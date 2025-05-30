@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>People Address Formatter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #e7f3ff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>People Address Formatter</h1>
+
+  <div class="container">
+    <button onclick="formatAddresses()">Show Addresses</button>
+    <ul id="output"></ul>
+  </div>
+
+  <script>
+    const people = [
+      {
+        name: "Alice",
+        address: {
+          city: "New York",
+          street: {
+            name: "Broadway",
+            number: 123
+          }
+        }
+      },
+      {
+        name: "Bob",
+        address: {
+          city: "Los Angeles",
+          street: {
+            name: "Sunset Boulevard",
+            number: 456
+          }
+        }
+      }
+    ];
+
+    function formatAddresses() {
+      const outputEl = document.getElementById('output');
+      outputEl.innerHTML = ''; // Clear existing content
+
+      const results = people.map(({ name, address: { city, street: { name: streetName } } }) =>
+        `${name} lives in ${city} on ${streetName}`
+      );
+
+      results.forEach(text => {
+        const li = document.createElement('li');
+        li.textContent = text;
+        outputEl.appendChild(li);
+      });
+    }
+  </script>
+
+</body>
+</html>
