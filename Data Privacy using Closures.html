@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Closure Counter - Data Privacy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef1f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .counter-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .increment-btn {
+      background-color: #28a745;
+      color: white;
+    }
+    .get-count-btn {
+      background-color: #007bff;
+      color: white;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="counter-box">
+  <h2>Private Counter Using Closure</h2>
+  <button class="increment-btn" onclick="handleIncrement()">Increment</button>
+  <button class="get-count-btn" onclick="handleGetCount()">Get Count</button>
+  <div id="output">Click a button to begin.</div>
+</div>
+
+<script>
+  function createCounter() {
+    let count = 0;
+
+    return {
+      increment: function () {
+        count++;
+        return count;
+      },
+      getCount: function () {
+        return count;
+      }
+    };
+  }
+
+  const counter = createCounter();
+
+  function handleIncrement() {
+    const result = counter.increment();
+    document.getElementById("output").textContent = `Counter incremented to: ${result}`;
+  }
+
+  function handleGetCount() {
+    const current = counter.getCount();
+    document.getElementById("output").textContent = `Current count is: ${current}`;
+  }
+</script>
+
+</body>
+</html>
