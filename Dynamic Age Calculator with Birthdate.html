@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    label, input, button {
+      display: block;
+      margin-bottom: 15px;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    input, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #output {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      font-size: 18px;
+      min-height: 50px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Dynamic Age Calculator with Birthdate</h2>
+
+  <label for="birthdate">Select Your Birthdate:</label>
+  <input type="date" id="birthdate" max="" />
+
+  <button onclick="calculateAge()">Calculate Age</button>
+
+  <div id="output">Your age will be displayed here.</div>
+
+  <script>
+    // Set max date to today to prevent future date selection
+    document.getElementById('birthdate').max = new Date().toISOString().split("T")[0];
+
+    function calculateAge() {
+      const birthdateInput = document.getElementById('birthdate').value;
+      const output = document.getElementById('output');
+
+      if (!birthdateInput) {
+        output.textContent = "Please select your birthdate.";
+        return;
+      }
+
+      const birthDate = new Date(birthdateInput);
+      const today = new Date();
+
+      if (birthDate > today) {
+        output.textContent = "Birthdate cannot be in the future.";
+        return;
+      }
+
+      // Calculate difference in years, months, days
+      let years = today.getFullYear() - birthDate.getFullYear();
+      let months = today.getMonth() - birthDate.getMonth();
+      let days = today.getDate() - birthDate.getDate();
+
+      // Adjust months and years if days are negative
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      // Adjust years if months are negative
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      output.textContent = `You are ${years} year${years !== 1 ? 's' : ''}, ` + 
+                           `${months} month${months !== 1 ? 's' : ''}, and ` + 
+                           `${days} day${days !== 1 ? 's' : ''} old.`;
+    }
+  </script>
+
+</body>
+</html>
