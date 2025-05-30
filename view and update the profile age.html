@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile - Dynamic Age Update</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      padding: 8px;
+      margin: 10px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      font-size: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>User Profile</h2>
+
+  <label>Name:</label>
+  <input type="text" id="name" placeholder="Enter name" value="Alice" />
+
+  <label>Age:</label>
+  <input type="number" id="age" placeholder="Enter age" value="28" />
+
+  <button onclick="updateUser()">Update Profile</button>
+
+  <div id="output"></div>
+
+  <script>
+    const userProfile = {
+      name: "Alice",
+      age: 28,
+      
+      details() {
+        return `${this.name} is ${this.age} years old.`;
+      },
+      
+      updateAge(newAge) {
+        if (newAge <= 0 || isNaN(newAge)) {
+          alert("Invalid age. Please enter a valid number.");
+          return;
+        }
+        this.age = newAge;
+      },
+
+      updateName(newName) {
+        if (!newName.trim()) {
+          alert("Invalid name.");
+          return;
+        }
+        this.name = newName;
+      }
+    };
+
+    function updateUser() {
+      const nameInput = document.getElementById('name').value;
+      const ageInput = parseInt(document.getElementById('age').value);
+
+      userProfile.updateName(nameInput);
+      userProfile.updateAge(ageInput);
+
+      document.getElementById('output').textContent = userProfile.details();
+    }
+
+    // Initial display
+    document.getElementById('output').textContent = userProfile.details();
+  </script>
+
+</body>
+</html>
