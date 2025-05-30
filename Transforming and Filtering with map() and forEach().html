@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Price Filter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Product Price Checker</h2>
+
+  <input type="text" id="name" placeholder="Product Name" />
+  <input type="number" id="price" placeholder="Product Price" />
+  <button onclick="addProduct()">Add Product</button>
+  <button onclick="processProducts()">Process Products</button>
+
+  <div id="output"></div>
+
+  <script>
+    const products = [];
+
+    function addProduct() {
+      const name = document.getElementById("name").value;
+      const price = parseFloat(document.getElementById("price").value);
+
+      if (name && !isNaN(price)) {
+        products.push({ name, price });
+        document.getElementById("output").innerHTML += `<p>Added: ${name} - $${price}</p>`;
+        document.getElementById("name").value = '';
+        document.getElementById("price").value = '';
+      } else {
+        alert("Please enter valid product details.");
+      }
+    }
+
+    function processProducts() {
+      const outputDiv = document.getElementById("output");
+      outputDiv.innerHTML += `<hr>`;
+      
+      const names = products.map(product => product.name);
+
+      products.forEach(product => {
+        const msg = `${product.name} is ${product.price > 50 ? 'above' : 'below'} $50`;
+        outputDiv.innerHTML += `<p>${msg}</p>`;
+      });
+    }
+  </script>
+
+</body>
+</html>
