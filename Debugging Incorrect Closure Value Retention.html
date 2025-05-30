@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Closure Index Fix Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    h2 {
+      color: #333;
+    }
+    .button-container {
+      margin-top: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #222;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Closure Index Fix (Click Buttons)</h2>
+
+<div class="button-container" id="buttons"></div>
+
+<div id="output">Output will appear here...</div>
+
+<script>
+  function createFunctionList() {
+    let functions = [];
+
+    for (let i = 0; i < 5; i++) {
+      functions.push(function () {
+        document.getElementById("output").textContent = `Index: ${i}`;
+      });
+    }
+
+    return functions;
+  }
+
+  const functionList = createFunctionList();
+  const buttonsDiv = document.getElementById("buttons");
+
+  functionList.forEach((fn, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = `Run Function ${index}`;
+    btn.addEventListener("click", fn);
+    buttonsDiv.appendChild(btn);
+  });
+</script>
+
+</body>
+</html>
