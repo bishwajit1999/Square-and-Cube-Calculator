@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Object Merger</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 500px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      font-family: monospace;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: -15px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Dynamic Object Merger</h2>
+
+    <label>Enter Profile Object (JSON):</label>
+    <textarea id="profileInput">
+{
+  "name": "Charlie",
+  "age": 29,
+  "address": {
+    "city": "San Francisco",
+    "zipcode": "94101"
+  }
+}
+    </textarea>
+
+    <label>Enter Updates Object (JSON):</label>
+    <textarea id="updatesInput">
+{
+  "age": 30,
+  "address": {
+    "zipcode": "94109",
+    "country": "USA"
+  }
+}
+    </textarea>
+
+    <div class="error" id="error"></div>
+    <button onclick="mergeObjects()">Merge Objects</button>
+
+    <pre id="result">Merged object will appear here...</pre>
+  </div>
+
+  <script>
+    function mergeObjects() {
+      const profileText = document.getElementById('profileInput').value;
+      const updatesText = document.getElementById('updatesInput').value;
+      const errorEl = document.getElementById('error');
+      const resultEl = document.getElementById('result');
+
+      errorEl.textContent = "";
+      resultEl.textContent = "";
+
+      try {
+        const profile = JSON.parse(profileText);
+        const updates = JSON.parse(updatesText);
+
+        const merged = {
+          ...profile,
+          ...updates,
+          address: {
+            ...profile.address,
+            ...updates.address
+          }
+        };
+
+        resultEl.textContent = JSON.stringify(merged, null, 2);
+      } catch (err) {
+        errorEl.textContent = "Invalid JSON input. Please correct and try again.";
+      }
+    }
+  </script>
+
+</body>
+</html>
